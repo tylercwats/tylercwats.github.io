@@ -90,6 +90,12 @@ function loadProject(page_data){
 }
 
 $( function() {
+
+  //load lazy load
+  ;(function() {
+    // Initialize
+    var bLazy = new Blazy();
+  })();
   // Set listeners on all li's
   // Bind click event
   $('li').on('click', bindProject.bind(this));

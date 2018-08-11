@@ -65,24 +65,36 @@ ul li:last-child{
 /*transition: <property> <duration> <timing-function> <delay>; */
  div, h1, h2, h3, p, ul, li, a{
    text-rendering: optimizeLegibility;
-   -webkit-transition: opacity .3s ease;
-   -moz-transition: opacity .3s ease;
-   -o-transition: opacity .3s ease;
-   transition: opacity .3s ease;
+   -webkit-transition: opacity .3s ease-in-out;
+   -moz-transition: opacity .3s ease-in-out;
+   -o-transition: opacity .3s ease-in-out;
+   transition: opacity .3s ease-in-out;
  }
 div,  a{
-   -webkit-transition: background-color .4s ease;
-   -ms-transition: background-color .4s ease;
-   -o-transition: background-color .4s ease;
-   transition: background-color .4s ease;
+   -webkit-transition: background-color .4s ease-in-out;
+   -ms-transition: background-color .4s ease-in-out;
+   -o-transition: background-color .4s ease-in-out;
+   transition: background-color .4s ease-in-out;
  }
 
  img{
-   -webkit-transition: transform .5s ease;
-   -moz-transition: transform .5s ease;
-   -o-transition: transform .5s ease;
-   transition: transform .5s ease;
+   -webkit-transition: transform .5s ease-in-out;
+   -moz-transition: transform .5s ease-in-out;
+   -o-transition: transform .5s ease-in-out;
+   transition: transform .5s ease-in-out;
  }
+
+ .b-lazy {
+    -webkit-transition: opacity 500ms ease-in-out;
+       -moz-transition: opacity 500ms ease-in-out;
+         -o-transition: opacity 500ms ease-in-out;
+            transition: opacity 500ms ease-in-out;
+             max-width: 100%;
+               opacity: 0;
+}
+.b-lazy.b-loaded {
+               opacity: 1;
+}
 
 /* .content:hover ul li{
   color: rgba(255,255,255,.25);
@@ -612,6 +624,7 @@ iframe{
   /* padding-bottom:40px; */
   padding-bottom: 10rem;
   background-color:#fff;
+  z-index: 10;
 }
 .next-project:hover{
     cursor: pointer;
