@@ -452,7 +452,7 @@ ul, li, h2, .content, .right, .left, .center, .projects{
   margin:0 0 4rem 0;
 }
 
-#panopticon.description-space{
+#panopticon .description-space{
   height: 80vh;
 }
 #panopticon_1.img-frame{
