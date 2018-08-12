@@ -681,8 +681,8 @@ iframe {
 
 /* 1.5 dpr */
 @media
-(max-width:2880px),
-(-webkit-min-device-pixel-ratio: 1.5),
+(max-width:1800px) and
+(-webkit-min-device-pixel-ratio: 1.5) and
 (min-resolution: 144dpi){
     /* Retina-specific stuff here */
     /* macbook pro 15 inch (max-width)*/
