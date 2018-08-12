@@ -41,7 +41,7 @@ ul li:last-child {
     max-width: 1240px
 }
 
-.content .center ul li:hover, .terminal > div:hover{
+.content .center ul li:hover, .terminal > div:hover p{
     opacity: 1!important
 }
 
