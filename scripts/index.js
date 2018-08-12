@@ -67,15 +67,27 @@ function getNextProject_data(page_data, keys){
 }
 
 function updatePageState(page_data,keys){
-  var state = keys[page_data.index];
+  // parameters — history.pushState(state, pageTitle, url);
+  var state = {id : keys[page_data.index] };
   // var pageTitle = projects[keys[page_data.index]].pageTitle;
   var pageTitle = page_data.pageTitle;
   var url = page_data.url;
   //make url look clean in window
   url = url.replace(".html", "");
+  // console.log('history: ',history.state, history.state.id);
+
+  window.addEventListener('popstate', function (event) {
+    // console.log(page_data.url);
+    if (history.state && history.state.id === '') {
+        // Render new content for the hompage
+        // console.log('home');
+    }
+  }, false);
 
   // console.log("data:",state,pageTitle,url,page_data.page);
   history.pushState(state, pageTitle, url);
+  // console.log('history: ', history.state, history.state.id);
+
 }
 
 function loadProject(page_data){
@@ -99,6 +111,8 @@ $( function() {
     // Initialize
     var bLazy = new Blazy();
   })();
+  // initialize history event
+  history.replaceState({id : ''},'','/');
   // Set listeners on all li's
   // Bind click event
   $('li').on('click', bindProject.bind(this));
