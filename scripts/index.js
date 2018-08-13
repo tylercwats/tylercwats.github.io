@@ -118,7 +118,7 @@ function loadProject(page_data){
 function fadeInPreview(e){
   var name = $(e.target).text();
   returnImageID(page_data, name);
-  console.log("in: ",name);
+  // console.log("in: ",name);
   //target unique image_id
   var id = "#" + page_data.image_id;
   //fade in
@@ -129,7 +129,7 @@ function fadeInPreview(e){
 
 function fadeOutPreview(e){
   var name = $(e.target).text();
-  console.log("out: ",name);
+  // console.log("out: ",name);
   returnImageID(page_data, name);
   //target unique image_id
   var id = "#" + page_data.image_id;
