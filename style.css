@@ -193,7 +193,7 @@ a {
 .space {
     z-index: 0;
     flex: 0 1 auto;
-    /* padding: 0 40px */
+    padding: 0 40px
 }
 
 .projects {
@@ -244,14 +244,17 @@ a {
 }
 
 .sizing {
-    max-width: 900px
+    max-width: 960px
+}
+.preview-image img, .preview-image video{
+  display:none;
 }
 
-.close,.image,.sizing {
+.preview-image ,.sizing {
     align-items: center
 }
 
-.image {
+.preview-image {
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
@@ -261,13 +264,13 @@ a {
     justify-content: center
 }
 
-.image div,.image img,.image video {
+.preview-image div,.preview-image img,.preview-image video {
     flex-shrink: 0;
     min-width: 100%;
     min-height: 100%
 }
 
-.image video {
+.preview-image video {
     min-width: 80%;
     min-height: 80%;
     position: absolute
