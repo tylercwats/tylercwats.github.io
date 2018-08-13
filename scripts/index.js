@@ -121,9 +121,13 @@ function fadeInPreview(e){
   // console.log("in: ",name);
   //target unique image_id
   var id = "#" + page_data.image_id;
+  that = $(id);
   //fade in
   //magic shit I don't fully understand
-  $(id).stop(true,true).hide().fadeIn(800).queue(false);
+  that.stop(true,true).fadeIn(500).queue(false);
+  // $(id).clearQueue().fadeIn(500).queue(false);
+  // $(id).addClass('.display-preview');
+  // console.log('in: ',id);
 
 }
 
@@ -135,7 +139,9 @@ function fadeOutPreview(e){
   var id = "#" + page_data.image_id;
   //fade out
   //magic shit I don't fully understand
-  $(id).stop(true,true).hide().fadeOut(800).queue(false);
+  // console.log('out ',id);
+  $(id).stop(true,false).fadeOut(500).queue(false);
+  // $(id).clearQueue().fadeOut(500).queue(false);
   // returnPgData(page_data, name);
   // console.log(page_data,keys);
 }
