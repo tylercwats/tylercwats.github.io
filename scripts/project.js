@@ -11,7 +11,6 @@ function emptyProject(){
 //emptys history state of the page (window path)
 function emptyState(){
   history.pushState({id : ''},"homepage","/");
-  // console.log(history.state);
 }
 
 // returns next project in sequence
