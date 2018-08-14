@@ -4,12 +4,12 @@ var front = $('.front img, .back video');
 $.getScript("/js/jquery.chocolat.js");
 
 //insantiating the chocolate plugin
-$('#example1').Chocolat({
-  loop           : false,
-  imageSize     : 'contain',
-  overlayOpacity : 1,
-  // fullScreen : true
-}).data('chocolat');
+// $('#example1').Chocolat({
+//   loop           : false,
+//   imageSize     : 'contain',
+//   overlayOpacity : 1,
+//   // fullScreen : true
+// }).data('chocolat');
 
 function emptyProject(){
   $('#loaded-page').empty();

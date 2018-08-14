@@ -403,6 +403,9 @@ a {
 .img-frame {
     max-height: 900px
 }
+.img-frame img{
+  transition: transform 400ms ease-in-out;
+}
 
 .img-frame:not(:last-child),.interaction {
     margin: 0 0 8rem
@@ -413,7 +416,7 @@ a {
 }
 
 .img-frame img:hover {
-    transform: scale(1.02,1.02)
+    transform: scale(1.02,1.02);
 }
 
 .img-container {
@@ -422,6 +425,17 @@ a {
     justify-content: center;
     margin: 0 0 4rem
 }
+/*lazyload */
+/* fade image in after load */
+.lazyload,
+.lazyloading {
+	opacity: 0;
+}
+.lazyloaded {
+	opacity: 1;
+	transition: opacity 400ms;
+}
+
 #about .bio p{
   text-align: center;
 }
