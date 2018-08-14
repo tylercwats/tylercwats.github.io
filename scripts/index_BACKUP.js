@@ -1,155 +1,242 @@
 // Tyler Watson portfolio
-// javascript bullshit
 //
 // 2018
 
 var page_data = {};
-
+var url;
 var projects =
 {
-  "gladwell series" : {"image":"gladwell_series.png", "page":"gladwell_series.html"},
-  "frame magazine" :{"image": "frame_magazine.png", "page" : "frame_magazine.html"},
-  "arsia" : {"image":"arsia.png", "page" : "arsia.html"},
-  "ÆOLIA" : {"image":"aeolia.png", "page" : "aeolia.html"},
-  "EET" : {"image":"eet.png", "page" : "eet.html"},
-  "motion reel": {"image":"preview.mp4", "page" : "reel.html"},
-  "panopticon" : {"image":"panopticon.png", "page" : "panopticon.html"},
-  "Air & Space" : {"image":"air&space4.png", "page" : "air&space.html"},
-  "MV Agusta" : {"image":"mvagusta.png", "page" : "mvagusta.html"}
+  "about" : {"image":"", "page":"about.html", 'pageTitle':'TYLER WATSON | about'},
+  "gladwell series" : {"image_id":"_gladwell", "page":"gladwell_series.html", 'pageTitle':'TYLER WATSON | Gladwell Series'},
+  "frame magazine" :{"image_id": "_frame", "page" : "frame_magazine.html", 'pageTitle': 'TYLER WATSON | Frame Magazine'},
+  "arsia" : {"image_id":"_arsia", "page" : "arsia.html", 'pageTitle': 'TYLER WATSON | Arsia'},
+  "æolia" : {"image_id":"_aeolia", "page" : "aeolia.html", 'pageTitle': 'TYLER WATSON | AEOLIA'},
+  "eet" : {"image_id":"_eet", "page" : "eet.html", 'pageTitle': 'TYLER WATSON | EET'},
+  "motion reel": {"image_id":"_reel", "page" : "reel.html", 'pageTitle': 'TYLER WATSON | Motion Reel'},
+  "panopticon" : {"image_id":"_panopticon", "page" : "panopticon.html", 'pageTitle': 'TYLER WATSON | Panopticon'},
+  "air & space" : {"image_id":"_air", "page" : "air&space.html", 'pageTitle': 'TYLER WATSON | Air & Space'},
+  "mv agusta" : {"image_id":"_mv", "page" : "mvagusta.html", 'pageTitle': 'TYLER WATSON | MV Agusta'}
 };
+var keys = Object.keys(projects);
 
-// var page_data = {};
-
-// Gets the next page, from current page
-// This function returns an object
-function returnNextPg(page_data, name){
-
-  // Look into projects and get keys
-  var keys = Object.keys(projects);
-
+//object defined above corresponds to html and files
+//retrieves the corresponding page data
+function returnPgData(page_data, name){
   // SET INDEX OF NEXT PAGE
-  page_data.index = keys.indexOf(name); // Expect 0
-  var next = page_data.index + 1;
-  // Update page_data
-  page_data.index = next;
+  page_data.index = keys.indexOf(name);
+  var index = page_data.index;
+  page_data.name = name;
 
-  // SET NAME OF NEXT PAGE
-  // the name of the next project
-  next_name = keys[next];
-  page_data.next_name = next_name;
+  page_data.url = projects[keys[index]].page;
+  page_data.page = "/projects/"+projects[keys[index]].page;
 
-  // SET PATH TO NEXT PAGE
-  // path to next page
-  page_data.next_page = "projects/"+projects[keys[next]].page;
-  // page_data = e.data;
+  page_data.image_id = projects[keys[index]].image_id;
+  console.log(page_data.image_id);
 
-  // console.log("name:", next_name, "index", e.data.index, "page", e.data.next_page);
-  console.log("Next Page Data = ", page_data);
+  return page_data, keys;
+}
+// may need to rewrite code — similar to returnPgData
+// only dependent on getPrevProject_data
+function updatePage_data(index, keys, page_data){
+  page_data.index = index;
+  name = keys[index];
+  page_data.name = name;
+  page_data.pageTitle = projects[keys[page_data.index]].pageTitle;
+  page_data.url = projects[keys[page_data.index]].page;
+  page_data.page = '/projects/'+page_data.url;
+  page_data.image_id = projects[keys[index]].image_id;
+
   return page_data;
-  // page_data = e.data;
+}
+
+//returns imageID for controlling fadeIn/Out Preview functions
+// is currently setting it to the first gladwell and not changing
+// need to restructure
+function returnImageID(page_data, name){
+  // var ImageID = {};
+  var keys = Object.keys(projects);
+  var index = keys.indexOf(name);
+  page_data.image_id = projects[keys[index]].image_id;
+
+  return page_data;
+}
+
+function getNextProject_data(page_data, keys){
+  var next = page_data.index;
+  var size = keys.length - 1;
+  //if we are at the last project
+  //back to the beginning
+  if(page_data.index == (size) ){
+    next = 1;
+  }
+  else{
+     next = page_data.index + 1;
+  }
+  //sets the projects footer
+  setProjectFooter(keys, next, size);
+  return;
+}
+
+// might need this later so we'll keep it
+//returns previous project for history
+function getPrevProject_data(page_data, keys){
+  var prev = page_data.index-1;
+  var size = keys.length - 1;
+  //if we are at the first project
+  //previous loads last page
+  if(page_data.index == 1 ){
+    prev = size;
+    page_data.url = projects[keys[prev]];
+  }
+  else{
+     prev = page_data.index - 1;
+     updatePage_data(prev, keys, page_data);
+     page_data.url = projects[keys[prev]];
+  }
+  // return keys, next, size;
+  return page_data;
+}
+//sets the project footer based on previous function called
+function setProjectFooter(keys, next, size){
+  // current project we're on
+  $('.status-current').prepend(next);
+  // out of # of projects
+  $('.status-length').prepend(size);
+  // next name of project in list
+  next_name = keys[next];
+  $('i.data-project').prepend(next_name);
+  return;
+}
+
+//controls history state of window
+function updatePageState(page_data,keys){
+  // parameters — history.pushState(state, pageTitle, url);
+  //assigns id to main key in object (project OG title)
+  var state = keys[page_data.index];
+  // var pageTitle = projects[keys[page_data.index]].pageTitle;
+  var pageTitle = page_data.pageTitle;
+  var url = page_data.url;
+  //make url look clean in window
+  url = url.replace(".html", "");
+  history.pushState(state, pageTitle, url);
+}
+
+//finds url of object based on name
+//for updating pagestate
+function findURL(name, page_data){
+  //find index of projects based on name
+  var index = keys.indexOf(name);
+  var url = '/projects/' + projects[keys[index]].page;
+  console.log('url: ', url);
+  // updatePage_data(index, keys, page_data);
+  emptyProject();
+  loadProject(url);
+
+  return;
+}
+// renders correct page that corresponds to the window path
+// when clicking the the forward and back arrows of the browser
+function renderPopState(){
+  // on event of clicking the arrows
+  window.addEventListener('popstate', function (e) {
+    if (history.state === '' && e.state === '') {
+        //empties to homepage
+        emptyProject();
+        return;
+    }
+    else if (history.state === e.state){
+      // getPrevProject_data(page_data, keys);
+      console.log('same ', e.state, page_data);
+      findURL(e.state, page_data);
+      return;
+    }
+    else{
+      console.log('not valid', e.state);
+      return e.state;
+    }
+  }, false);
+}
+
+
+function loadProject(page_url){
+  //goes to id on index
+  console.log('loading page_url: ', page_url);
+  //loads the projects page
+  $('#loaded-page').load(page_url, function(){
+    // updatePageState(page_data, keys);
+    //returns next project info (name)
+    //update next project eyebrow info
+    getNextProject_data(page_data, keys);
+    //gets scripts for the page we loaded
+    $.getScript("/scripts/project.js");
+    return page_data;
+  });
+}
+
+function fadeInPreview(e){
+  var name = $(e.target).text();
+  returnImageID(page_data, name);
+  // console.log("in: ",name);
+  //target unique image_id
+  var id = "#" + page_data.image_id;
+  that = $(id);
+  // stop the animation (go to the end current because it could be fading out).
+  // Fade in. Don't add to queue
+  that.stop(true,true).fadeIn(500).queue(false);
+}
+
+function fadeOutPreview(e){
+  var name = $(e.target).text();
+  // console.log("out: ",name);
+  returnImageID(page_data, name);
+  //target unique image_id
+  var id = "#" + page_data.image_id;
+  // stop the animation (don't to the end because it'd suddently fade up).
+  // Fade out. Don't add to queue
+  $(id).stop(true,false).fadeOut(500).queue(false);
 }
 
 $( function() {
-  //insantiating the chocolate plugin
+  // initialize history event
+  history.replaceState('','','');
 
-  // var page_data = {};
-
-  $('#example1').Chocolat({
-    loop           : false,
-    imageSize     : 'contain',
-    overlayOpacity : 1,
-    // fullScreen : true
-  }).data('chocolat');
-
-  // $('example1').Chocolat().loop(true);
-
+  renderPopState();
+  // Set listeners on all li's
+  // Bind click event
+  $('li').on('click', bindProject.bind(this));
+  $('.terminal > div p').on('click', bindProject.bind(this));
+  //initializes our state object so we can have proper history
+  // controls the projects background image hover transitions on index
   $('li')
-    // Project on Homepage Clicked
-    .click(page_data, function(){
-      //inner content of li
-
-      var name = $(this).text();
-      console.log(name);
-      //finds the html page to load from the object we defined
-      var page = "projects/"+projects[name].page;
-
-      // nextPage(name, index, next_page);
-      returnNextPg(page_data, name);
-
-      //trying to append next project name. Currently not working
-      $('#loaded-page').load(page, function(){
-        // $(this).trigger("pagecreate");
-        $('i.data-project').prepend(next_name);
-        //need to fix this loading of script everytime page appends
-        $.getScript("scripts/script2.js","js/jquery.chocolat.js");
-        console.log("completed page load");
-      });
-
-      // also loses functionality of scripts after it loads?
-      //callback?
-
-      // Sets click event to off
-      $(".close").off('click');
-      $("li").off("click");
-
-      console.log(page_data);
-      return page_data;
+    .mouseover(function(e){
+      fadeInPreview(e);
+    })
+    .mouseout(function(e){
+      fadeOutPreview(e);
     });
 
-    // Next Project Button on Project Page
-    $('.next-project').click( page_data, function(){
-      console.log('Next project data = ', page_data);
-      // return page_data;
-      //prepend the next project into loaded page div
-      //remove the last project
-    });
-
-
-
-  var back = $('.back img, .front video');
-  var front = $('.front img, .back video');
-  //load next project
-  //controls images that change when hover
-  $("li")
+  function bindProject(e){
+        // Get text of clicked event
+        var name = $(e.target).text();
+        //return page data based on the name of the event listener
+        returnPgData(page_data, name);
+        //updating window
+        updatePageState(page_data,keys)
+        //load page of project
+        // loadProject(page_data);
+        loadProject(page_data.page);
+        return page_data;
+  }
+    $(".space .projects")
       .mouseover(function(){
-          var name = $(this).text();
-          // var src = "images/" + images[name];
-          var src = "images/" + projects[name].image;
-
-          if (back.is(":animated")){
-            //if back image is animating then we stop it's animation and fade in the front image
-            back.stop(true,false).fadeOut(300,function(){
-              back.removeAttr("src");});
-            front.attr({"src":src}).stop(true,true).hide().fadeIn(800).queue(false);
-          }
-          else{
-            //fade in the back when complete assign it to the front
-            back.attr({"src":src}).stop(true, false).hide().fadeIn(800,function(){
-              front.attr({"src":src}).stop(true, true).show();
-              back.removeAttr("src");
-            }).queue(false);
-          }
+        $(".page").stop(true,false).animate({
+            'opacity': '.8'
+          }, 400, 'linear');
       })
-      .mouseout(function() {
-        var name = $(this).text();
-        // var src = "images/" + images[name];
-        var src = "images/" + projects[name].image;
-
-        if ( (name == "motion reel") && ( back.css("src") == front.css("src") ) ) {
-          back.removeAttr("src");
-        }
-
-        if (back.is(":animated")){
-          //if back is in transition to fading in (or just animating) fade out
-          front.stop(true,false).fadeOut(400).queue(false);
-        }
-        else {
-          front.stop(true,true).fadeOut(800).queue(false);
-          back.stop(true,false).fadeOut(800).queue(false);
-        }
+      .mouseout(function(){
+        $(".page").stop(true,false).animate({
+            'opacity': '1'
+          }, 400, 'linear');
       });
-          // $('.gladwell').on('click', function(e){
-          //   $('.wrapper, .wrapper-background').css({"display":"flex"});
-          // });
 
 });

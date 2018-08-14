@@ -3,13 +3,6 @@ var back = $('.back img, .front video');
 var front = $('.front img, .back video');
 $.getScript("/js/jquery.chocolat.js");
 
-//insantiating the chocolate plugin
-// $('#example1').Chocolat({
-//   loop           : false,
-//   imageSize     : 'contain',
-//   overlayOpacity : 1,
-//   // fullScreen : true
-// }).data('chocolat');
 
 function emptyProject(){
   $('#loaded-page').empty();
@@ -37,16 +30,11 @@ function returnNextPg(page_data){
     var next = page_data.index + 1;
   }
 
-  // Update page data according to the index
-  // set the next index
-  page_data.index = next;
-  // set name of the next project
-  next_name = keys[next];
-  page_data.name = next_name;
-  // SET PATH TO NEXT PAGE
-  page_data.pageTitle = projects[keys[page_data.index]].pageTitle;
-  page_data.url = projects[keys[next]].page;
-  page_data.page = "/projects/"+projects[keys[next]].page;
+  // updatePage_data(next, keys, page_data);
+  updatePage_index(next, page_data);
+  returnPgData(page_data, name);
+
+  push_pageHistory(page_data,keys);
 
   return page_data;
 }
@@ -56,7 +44,7 @@ $('.next-project').click( page_data, function(){
   //collects next page
   returnNextPg(page_data);
   //loads the next page
-  loadProject(page_data);
+  loadProject(page_data.page);
 });
 
 // Close project panel
