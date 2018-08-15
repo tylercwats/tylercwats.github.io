@@ -309,6 +309,11 @@ svg{
 /*  */
 
 
+#loaded-page{
+  /* opacity:0; */
+  display:none;
+}
+
 .close {
     flex: 0 1 10%;
     -ms-align-items: center
@@ -354,6 +359,7 @@ svg{
 
 .wrapper, .loader{
     top: 0;
+    /* top: 8vh; */
     z-index: 10;
     display: flex;
     position: absolute;

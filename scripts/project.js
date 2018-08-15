@@ -5,7 +5,10 @@ $.getScript("/js/jquery.chocolat.js");
 
 
 function emptyProject(){
-  $('#loaded-page').empty();
+  $('#loaded-page').stop().fadeOut(300,
+    function(){ $(this).empty();
+    }).queue(false);
+  // $('#loaded-page').empty();
 }
 
 //emptys history state of the page (window path)
@@ -42,6 +45,9 @@ function returnNextPg(page_data){
 $('.next-project').click( page_data, function(){
   //collects next page
   returnNextPg(page_data);
+
+  //write transition between the projects
+  
   //loads the next page
   loadProject(page_data.page);
 });

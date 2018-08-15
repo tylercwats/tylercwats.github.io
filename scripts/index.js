@@ -31,7 +31,6 @@ function returnPgData(page_data, name){
   page_data.page = "/projects/"+projects[keys[index]].page;
 
   page_data.image_id = projects[keys[index]].image_id;
-  console.log(page_data.image_id);
 
   return page_data, keys;
 }
@@ -96,7 +95,8 @@ function findURL(name, page_data){
   //find index of projects based on name
   var index = keys.indexOf(name);
   var url = '/projects/' + projects[keys[index]].page;
-  console.log('url: ', url);
+
+  //remove project and load current one
   emptyProject();
   loadProject(url);
 
@@ -127,17 +127,25 @@ function renderPopState(){
 
 function loadProject(page_url){
   //goes to id on index
-  console.log('loading page_url: ', page_url);
+  $page = $('#loaded-page');
   //loads the projects page
-  $('#loaded-page').load(page_url, function(){
+  $page.load(page_url, function(){
+    // currently loads project without always emptying
+    //decide if we want to automate emptying in here
+    //and check to see if there's content inside the loaded-page class
+    // emptyProject();
+
     //returns next project info (name)
     //update next project eyebrow info
     getNextProject_data(page_data, keys);
     //gets scripts for the page we loaded
     $.getScript("/scripts/project.js");
-    //need to set the page default to invisble
-    //fade it's opacity up to 1 while incorporating upward motion
+    $(this).stop().fadeIn(300).queue(false);
 
+    // incorporates an upwards motion if the css is switched in .wrapper
+    // $(this).stop().fadeIn(200).find('.wrapper').animate({
+    //   top: '0'
+    // }, 300).queue(false);
     return page_data;
   });
 }
