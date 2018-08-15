@@ -296,7 +296,7 @@ svg path {
 }
 svg{
   height: 8vh;
-  max-height: 100px;
+  max-height: 90px;
 }
 
 .loader{
