@@ -433,7 +433,7 @@ a {
 }
 .lazyloaded {
 	opacity: 1;
-	transition: opacity 400ms;
+	transition: opacity .3s ease-in-out;
 }
 
 #about .bio p{
