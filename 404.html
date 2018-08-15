@@ -5,34 +5,86 @@ permalink: /404.html
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Page Not Found</title>
+    <title>404</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
     <style>
-        * {
-            line-height: 1.2;
-            margin: 0;
+        .page,body,html {
+            height: 100%
         }
-        html {
-            color: #888;
-            display: table;
-            font-family: sans-serif;
-            height: 100%;
-            text-align: center;
-            width: 100%;
-        }
+
         body {
-            display: table-cell;
-            vertical-align: middle;
-            margin: 2em auto;
+            overflow: hidden;
+            margin: 0;
+            background-color: #0d0b0d;
+            display: flex;
+            justify-content: center;
         }
-        h1 {
-            color: #555;
-            font-size: 2em;
-            font-weight: 400;
+        #container{
+          align-self: center;
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          min-height:80vh;
+          justify-content: space-between;
         }
-        p {
-            margin: 0 auto;
-            width: 280px;
+        .preview,.sizing {
+            height: 100%;
+            display: flex
+        }
+        .preview {
+            width: 100%;
+            position: fixed;
+            z-index: -1;
+            top: 0;
+            justify-content: center;
+            /* filter: blur(5px);
+            -webkit-filter: blur(5px) */
+        }
+        .preview-image {
+          height: 100%;
+          margin: 0 auto;
+          overflow: hidden;
+          vertical-align: middle;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+            /* justify-content: center */
+        }
+        .preview-image video {
+          flex: 1 1 auto;
+          max-height:100%;
+        }
+        @font-face {
+            font-family:"Trade Gothic";src:url(fonts/tradegothicltstd-light.woff2) format("woff2"),url(fonts/tradegothicltstd-light.woff) format("woff"),url(fonts/tradegothicltstd-light.TTF) format("truetype")
+        }
+        h1{
+            font-family: "Trade Gothic",sans-serif;
+            text-transform: uppercase;
+            font-weight: 300;
+            font-size: 1.875rem;
+            letter-spacing: .3125875rem;
+            line-height: 3.4375rem;
+            color: #fff;
+            opacity: .9;
+            text-align: center;
+            flex: 0 0 auto;
+        }
+        h2 {
+            font-family: "Trade Gothic", sans-serif;
+            font-weight: 300;
+            font-size: 1.75rem;
+            line-height: 3.4375rem;
+            color:#fff;
+            text-align: center;
+            flex: 0 0 auto;
+        }
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+        a > h2{
+          opacity: .6;
         }
         @media only screen and (max-width: 280px) {
             body, p {
@@ -46,7 +98,20 @@ permalink: /404.html
     </style>
 </head>
 <body>
-    <h1>Page Not Found</h1>
-    <p>Sorry, but the page you were trying to view does not exist.</p>
+  <div id="container">
+    <h1>not found</h1>
+    <a href="index.html">
+      <h2 id="back">back to work</h2>
+    </a>
+  </div>
+  <div class="preview">
+    <div class="sizing">
+      <div class="preview-image">
+        <video id="404" playsinline loop autoplay muted src="/images/404.mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
