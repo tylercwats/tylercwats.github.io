@@ -135,6 +135,10 @@ function loadProject(page_url){
     getNextProject_data(page_data, keys);
     //gets scripts for the page we loaded
     $.getScript("/scripts/project.js");
+
+    //need to set the page default to invisble
+    //fade it's opacity up to 1 while incorporating upward motion
+
     return page_data;
   });
 }

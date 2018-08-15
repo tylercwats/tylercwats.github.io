@@ -281,6 +281,30 @@ a {
     min-height: 80%;
     position: absolute
 }
+
+/*loding svg progressbar  */
+svg path {
+  will-change: auto;
+  /* fill:none; */
+  fill:#0d0b0d;
+  stroke:#fff;
+  /* fill:#fff; */
+  /* stroke: #0d0b0d; */
+  stroke-width: 2px;
+  stroke-miterlimit:10;
+  transition-timing-function: ease-in;
+}
+svg{
+  height: 8vh;
+}
+
+.loader{
+  align-items: center;
+  justify-content: center;
+  /* background-color:white; */
+  background-color: #0d0b0d;
+  transition-timing-function: ease-in;
+}
 /*  */
 
 
@@ -327,7 +351,7 @@ a {
     transform: rotate(90deg)
 }
 
-.wrapper {
+.wrapper, .loader{
     top: 0;
     z-index: 10;
     display: flex;
