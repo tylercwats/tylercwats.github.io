@@ -173,7 +173,9 @@ function fadeOutPreview(e){
   $(id).stop(true,false).fadeOut(500).queue(false);
 }
 
+//on document ready
 $( function() {
+  // $.getScript("/scripts/loader.js");
   // initialize history event
   history.replaceState('','','');
 

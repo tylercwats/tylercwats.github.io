@@ -1,7 +1,7 @@
 // makes sure it fades out correctly
 var back = $('.back img, .front video');
 var front = $('.front img, .back video');
-$.getScript("/js/jquery.chocolat.js");
+// $.getScript("/js/jquery.chocolat.js");
 
 
 function emptyProject(){
@@ -47,7 +47,7 @@ $('.next-project').click( page_data, function(){
   returnNextPg(page_data);
 
   //write transition between the projects
-  
+
   //loads the next page
   loadProject(page_data.page);
 });
