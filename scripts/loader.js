@@ -13,18 +13,17 @@ $(function(){
     $(path).animate({
         strokeDashoffset: "0"
       }, 1000, function(){
+        //fille to dark
+       $(path).css({
+         strokeWidth : '0',
+         transition: "20ms",
+         fill: "#0d0b0d",
+       });
       //background to white
       $('.loader').css({backgroundColor: '#fff', transition: "20ms"});
-       //fille to dark
-      $(path).css({
-        fill: "#0d0b0d",
-        strokeWidth : '0',
-        transition: "400ms",
-      });
       // $(path).css({fill: "#fff", transition: "400ms"});
       //fade
       $('.loader').stop().delay(800).fadeOut(400).queue(false);
     });
   });
-
 });
