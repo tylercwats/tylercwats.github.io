@@ -66,6 +66,7 @@ function getNextProject_data(page_data, keys){
   else{
      next = page_data.index + 1;
   }
+
   // current project we're on
   $('.status-current').prepend(next);
   // out of # of projects
@@ -108,14 +109,16 @@ function renderPopState(){
   // on event of clicking the arrows
   window.addEventListener('popstate', function (e) {
     // if (history.state === '' && e.state === '') {
-    if (e.state.id === '') {
+    if (e.state == '' || e.state.id === '') {
         //empties to homepage
         emptyProject();
         return;
     }
     else if (history.state === e.state){
       // getPrevProject_data(page_data, keys);
-      console.log('same ', e.state, page_data);
+      console.log('same: estate', e.state);
+      console.log('historystate', history.state);
+      console.log('page', page_data);
       findURL(e.state, page_data);
       return;
     }
@@ -141,7 +144,16 @@ function loadProject(page_url){
     getNextProject_data(page_data, keys);
     //gets scripts for the page we loaded
     $.getScript("/scripts/project.js");
-    $(this).stop().fadeIn(300).queue(false);
+    //fades in doc and sets the height of space
+    $(this).stop().fadeIn(300, function(){
+      var that = $(this).find('.description');
+      var high = that.outerHeight();
+      //dynamically setting the spaceing size between the image and length of text
+      $(".description-space").css({
+        height : high
+      });
+
+    }).queue(false);
 
     // incorporates an upwards motion if the css is switched in .wrapper
     // $(this).stop().fadeIn(200).find('.wrapper').animate({
@@ -205,6 +217,7 @@ $( function() {
         //load page of project
         // loadProject(page_data);
         loadProject(page_data.page);
+
         return page_data;
   }
     $(".space .projects")

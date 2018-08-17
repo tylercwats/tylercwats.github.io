@@ -401,6 +401,7 @@ svg{
 }
 
 .text>p {
+    color: #545454;
     padding: 0 10%;
     max-width: 800px;
     margin: 0 auto
@@ -411,7 +412,8 @@ svg{
 }
 
 .description-space {
-    height: 50vh
+    /* height: 50vh; */
+    margin-top: 5vh;
 }
 
 .folio {
@@ -790,7 +792,8 @@ iframe {
     }
 
     h3,p {
-        font-size: 1.375rem
+        font-size: 1.275rem;
+        line-height: 2.1875rem;
     }
 }
 
@@ -808,7 +811,8 @@ iframe {
     }
 
     h3,p {
-        font-size: 1.275rem
+        font-size: 1.125rem;
+        line-height: 1.875rem
     }
 
     ul li:first-child {
@@ -817,6 +821,18 @@ iframe {
 
     ul li:last-child {
         padding-bottom: 20px
+    }
+    .text > p, .quote p{
+      padding: 0;
+    }
+    .img-frame .text {
+      margin: 0 20px;
+    }
+    .awards, .end-space{
+      padding: 80px 4%;;
+    }
+    .description{
+      margin-top: 10px
     }
 
     .sizing {
