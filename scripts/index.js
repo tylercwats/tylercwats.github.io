@@ -107,7 +107,8 @@ function findURL(name, page_data){
 function renderPopState(){
   // on event of clicking the arrows
   window.addEventListener('popstate', function (e) {
-    if (history.state === '' && e.state === '') {
+    // if (history.state === '' && e.state === '') {
+    if (e.state.id === '') {
         //empties to homepage
         emptyProject();
         return;
