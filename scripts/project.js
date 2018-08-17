@@ -32,19 +32,22 @@ function returnNextPg(page_data){
     var next = page_data.index + 1;
   }
 
-  // updatePage_data(next, keys, page_data);
+  //pass the next to update
   updatePage_index(next, page_data);
-  returnPgData(page_data, name);
+
+  setPgData(page_data, name);
 
   push_pageHistory(page_data,keys);
 
   return page_data;
 }
 
+
 // Next Project Button on Project Page
 $('.next-project').click( page_data, function(){
   //collects next page
   returnNextPg(page_data);
+  // returnNextURL(page_data);
 
   //write transition between the projects
 

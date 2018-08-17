@@ -20,8 +20,8 @@ var projects =
 var keys = Object.keys(projects);
 
 //object defined above corresponds to html and files
-//retrieves the corresponding page data
-function returnPgData(page_data, name){
+//sets the corresponding page data
+function setPgData(page_data, name){
   // SET INDEX OF NEXT PAGE
   page_data.index = keys.indexOf(name);
   var index = page_data.index;
@@ -31,6 +31,7 @@ function returnPgData(page_data, name){
   page_data.page = "/projects/"+projects[keys[index]].page;
 
   page_data.image_id = projects[keys[index]].image_id;
+  page_data.pageTitle = projects[keys[index]].pageTitle;
 
   return page_data, keys;
 }
@@ -44,8 +45,6 @@ function updatePage_index(index, page_data){
 }
 
 //returns imageID for controlling fadeIn/Out Preview functions
-// is currently setting it to the first gladwell and not changing
-// need to restructure
 function returnImageID(page_data, name){
   // var ImageID = {};
   var keys = Object.keys(projects);
@@ -68,7 +67,7 @@ function getNextProject_data(page_data, keys){
   }
 
   // current project we're on
-  $('.status-current').prepend(next);
+  $('.status-current').prepend(page_data.index);
   // out of # of projects
   $('.status-length').prepend(size);
   // next name of project in list
@@ -96,7 +95,7 @@ function findURL(name, page_data){
   //find index of projects based on name
   var index = keys.indexOf(name);
   var url = '/projects/' + projects[keys[index]].page;
-
+  updatePage_index(index, page_data);
   //remove project and load current one
   emptyProject();
   loadProject(url);
@@ -116,14 +115,13 @@ function renderPopState(){
     }
     else if (history.state === e.state){
       // getPrevProject_data(page_data, keys);
-      console.log('same: estate', e.state);
-      console.log('historystate', history.state);
-      console.log('page', page_data);
+      //matches the URL then loads the page
       findURL(e.state, page_data);
+
+      // updatePage_index(page_data.index, page_data);
       return;
     }
     else{
-      console.log('not valid', e.state);
       return e.state;
     }
   }, false);
@@ -138,6 +136,8 @@ function loadProject(page_url){
     //decide if we want to automate emptying in here
     //and check to see if there's content inside the loaded-page class
     // emptyProject();
+
+    //need to update the page data
 
     //returns next project info (name)
     //update next project eyebrow info
@@ -211,7 +211,7 @@ $( function() {
         // Get text of clicked event
         var name = $(e.target).text();
         //return page data based on the name of the event listener
-        returnPgData(page_data, name);
+        setPgData(page_data, name);
         //updating window
         push_pageHistory(page_data,keys)
         //load page of project
