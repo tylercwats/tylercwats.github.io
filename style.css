@@ -100,7 +100,8 @@ img, video {
 h2 {
     font-family: "Trade Gothic", sans-serif;
     font-weight: 300;
-    font-size: 1.75rem;
+    /* font-size: 1.75rem; */
+    font-size: 1.6rem;
     line-height: 3.4375rem;
 }
 .terminal p, h2{
@@ -699,7 +700,8 @@ iframe {
     }
 
     h2 {
-        font-size: 1.625rem
+        /* font-size: 1.625rem */
+        font-size: 1.475rem;
     }
 
     h3,p {
@@ -731,7 +733,8 @@ iframe {
     }
 
     h2 {
-        font-size: 1.625rem
+        /* font-size: 1.625rem; */
+        font-size: 1.475rem;
     }
 
     h3,p {
@@ -751,7 +754,8 @@ iframe {
         line-height: 3.15rem
     }
     h2 {
-        font-size: 1.525rem
+        /* font-size: 1.525rem; */
+        font-size: 1.375rem;
     }
 
     h3,p {
@@ -790,7 +794,8 @@ iframe {
     }
 
     h2 {
-        font-size: 1.625rem
+        /* font-size: 1.625rem; */
+        font-size: 1.475rem;
     }
 
     h3,p {
@@ -813,7 +818,8 @@ iframe {
     }
 
     h3,p {
-        font-size: 1.125rem;
+        /* font-size: 1.125rem; */
+        font-size: 1.075rem;
         line-height: 1.875rem
     }
 
