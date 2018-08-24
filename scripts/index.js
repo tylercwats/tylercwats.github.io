@@ -137,9 +137,6 @@ function loadProject(page_url){
     // currently loads project without always emptying
     //decide if we want to automate emptying in here
     //and check to see if there's content inside the loaded-page class
-    // emptyProject();
-
-    //need to update the page data
 
     //returns next project info (name)
     //update next project eyebrow info
