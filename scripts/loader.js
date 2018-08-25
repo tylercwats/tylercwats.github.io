@@ -5,8 +5,10 @@ $(function(){
   var logo = $('.logo path'),
   perfData = window.performance.timing, // The PerformanceTiming interface
   EstimatedTime = -(perfData.loadEventEnd - perfData.navigationStart), // Calculated Estimated Time of Page Load which returns negative value.
-  time = parseInt((EstimatedTime/1000)%60)*100; //Converting EstimatedTime from miliseconds to seconds.
-
+  // time = parseInt((EstimatedTime/1000) % 60)*100; //Converting EstimatedTime from miliseconds to seconds.
+  // time = parseInt((EstimatedTime/1000)%60)*50; //Converting EstimatedTime from miliseconds to seconds.
+  time = 1000;
+  console.log('seconds', time);
   //gets each path of the svg and sets it's length
   logo.each( function(i,path){
     var length = path.getTotalLength();

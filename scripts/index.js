@@ -127,45 +127,125 @@ function renderPopState(){
   }, false);
 }
 
-function loadProject(page_url){
-  //goes to id on index
-  $page = $('#loaded-page');
+function closeProject(e){
+  var $curtain = $('.black-curtain-in');
+  setClass( $curtain, 'in_down' ).then(
+    animCheck( '.in_down', e, emptyPage(e) )
+  ).then(
+    animCheck('.in_down', e, setClass($curtain,'out_down'))
+  );
+}
 
-  //call a transition
-  //loads the projects page
-  $page.load(page_url, function(){
-    // currently loads project without always emptying
-    //decide if we want to automate emptying in here
-    //and check to see if there's content inside the loaded-page class
-
-    //returns next project info (name)
-    //update next project eyebrow info
-    getNextProject_data(page_data, keys);
-    //gets scripts for the page we loaded
-    $.getScript("/scripts/project.js");
-    //fades in doc and sets the height of space
-    $(this).stop().fadeIn(300, function(){
-      var that = $(this).find('.description');
-      var high = that.outerHeight();
-      //dynamically setting the spaceing size between the image and length of text
-      $(".description-space").css({
-        height : high
+function animCheck(classs, e, emptyPage){
+  var promise = new $.Deferred();
+  $(classs).one('oanimationend msAnimationEnd animationend', function(e){
+        emptyPage;
       });
+  return promise.resolve();
+}
+var emptyPage = function(){
+  var promise = new $.Deferred();
+  $('#loaded-page').hide().empty();
+  return promise.resolve();
+}
+// function emptyProject(){
+var emptyProject = function (){
+    //if close event. Empty page.
+    var promise = new $.Deferred();
+    if ($("#loaded-page:has(*)").length){
+      return promise.resolve();
+    }
+    else{
+      emptyPage();
+    }
+    // $('#loaded-page').empty().hide();
+    // resolvePromise(promise);
+    return promise.resolve();;
+}
 
-    }).queue(false);
+// function loadPage($page, page_url){
+var loadPage = function ($curtain, $page, page_url){
+  //console.log('loading', page_url);
+  var promise = new $.Deferred();
+  //one–create event on selector. Trigger pageload on event (end of curtain animation)
+  $('.in_up').one('oanimationend msAnimationEnd animationend',
+    function(e) {
+      //console.log('load e',e);
+      $page.load(page_url, function(e){
+        //returns next project info (name)
+        //update next project eyebrow info
+        getNextProject_data(page_data, keys);
+        //gets scripts for the page we loaded
+        $.getScript("/scripts/project.js");
+        //fades in doc and sets the height of space
+        $(this).show(0, function(e){
+          var that = $(this).find('.description');
+          var high = that.outerHeight();
+          //dynamically setting the spaceing size between the image and length of text
+          $(".description-space").css({
+            height : high
+          });
 
-    // incorporates an upwards motion if the css is switched in .wrapper
-    // $(this).stop().fadeIn(200).find('.wrapper').animate({
-    //   top: '0'
-    // }, 300).queue(false);
-    return page_data;
+          promise = $.Deferred(function(deferred) {
+            $(deferred.resolve);
+          });
+
+        });
+        return promise, page_data;
+      });
   });
+}
+
+
+function setClass($curtain, classs){
+  var promise = new $.Deferred();
+  $curtain.addClass(classs);
+  // resolvePromise(promise);
+  return promise.resolve();
+}
+
+var out_up = function ($curtain){
+  $curtain.addClass('out_up');
+}
+
+function resetClass($curtain){
+  var promise = new $.Deferred();
+  //console.log($curtain);
+  $curtain.removeClass('in_up out_up in_down out_down');
+  // resolvePromise(promise);
+  return promise.resolve();
+}
+
+//create promise
+//resolve
+//pass
+//then function
+//repeat
+function loadProject(page_url){
+  //curtain in... callback.
+  //empty project... callback
+  //load project... callback
+  //curtain out... callback
+  //console.log('load url',page_url);
+  var $page = $('#loaded-page');
+  var $curtain = $('.black-curtain-in');
+  // var promise = new $.Deferred();
+  // resetClass($curtain).then(in_up($curtain)).then(emptyProject()).then(loadPage($curtain, $page, page_url));
+  resetClass($curtain).then(setClass($curtain, 'in_up')).then(emptyProject()).then(loadPage($curtain, $page, page_url));
+  // resetClass($curtain).then(setClass($curtain, 'in_up')).then(emptyProject()).then(loadPage($curtain, $page, page_url)).done(out_up($curtain));
+
+  $('.in_up').one('oanimationend msAnimationEnd animationend',
+    function(v) {
+    // code to execute after animation ends
+    out_up($curtain);
+    //console.log('v',v);
+    });
 }
 
 function fadeInPreview(e){
   var name = $(e.target).text();
   returnImageID(page_data, name);
-  // console.log("in: ",name);
+  // //console.log("in: ",name);
   //target unique image_id
   var id = "#" + page_data.image_id;
   that = $(id);
@@ -176,7 +256,7 @@ function fadeInPreview(e){
 
 function fadeOutPreview(e){
   var name = $(e.target).text();
-  // console.log("out: ",name);
+  // //console.log("out: ",name);
   returnImageID(page_data, name);
   //target unique image_id
   var id = "#" + page_data.image_id;
@@ -212,9 +292,10 @@ $( function() {
         //return page data based on the name of the event listener
         setPgData(page_data, name);
         //updating window
-        push_pageHistory(page_data,keys)
+        push_pageHistory(page_data,keys);
+        //transition;
+        //call a transition
         //load page of project
-        // loadProject(page_data);
         loadProject(page_data.page);
 
         return page_data;
@@ -222,7 +303,7 @@ $( function() {
     $(".space .projects")
       .mouseover(function(){
         $(".page").stop(true,false).animate({
-            'opacity': '.8'
+            'opacity': '.85'
           }, 400, 'linear');
       })
       .mouseout(function(){

@@ -1,16 +1,5 @@
 // makes sure it fades out correctly
-var back = $('.back img, .front video');
-var front = $('.front img, .back video');
 // $.getScript("/js/jquery.chocolat.js");
-
-
-function emptyProject(){
-  $('#loaded-page').stop().fadeOut(300,
-    function(){ $(this).empty();
-    }).queue(false);
-  // $('#loaded-page').empty();
-}
-
 //emptys history state of the page (window path)
 function emptyState(){
   history.pushState({id : ''},"homepage","/");
@@ -70,9 +59,8 @@ $(".close")
     },200, 'linear');
   })
   .on('click', function(e){
-
     //closes window by removing project
+    // emptyProject();
+    closeProject(e);
     emptyState();
-    emptyProject();
-
   });
