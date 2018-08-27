@@ -191,6 +191,7 @@ var loadPage = function ($curtain, $page, page_url){
           });
 
         });
+        // window.onload = function () {out_up($curtain) };
         return promise, page_data;
       });
   });
@@ -229,8 +230,6 @@ function loadProject(page_url){
   //console.log('load url',page_url);
   var $page = $('#loaded-page');
   var $curtain = $('.black-curtain-in');
-  // var promise = new $.Deferred();
-  // resetClass($curtain).then(in_up($curtain)).then(emptyProject()).then(loadPage($curtain, $page, page_url));
   resetClass($curtain).then(setClass($curtain, 'in_up')).then(emptyProject()).then(loadPage($curtain, $page, page_url));
   // resetClass($curtain).then(setClass($curtain, 'in_up')).then(emptyProject()).then(loadPage($curtain, $page, page_url)).done(out_up($curtain));
 
