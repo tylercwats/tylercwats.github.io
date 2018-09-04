@@ -165,6 +165,12 @@ var emptyProject = function (){
 
 // function loadPage($page, page_url){
 var loadPage = function ($curtain, $page, page_url){
+  //Analytics event
+  // ga('send', 'event', 'page_load', [eventAction], [eventLabel], [eventValue], [fieldsObject]);
+  ga('send', {
+    hitType: 'pageview',
+    page: location.pathname
+  });
   //console.log('loading', page_url);
   var promise = new $.Deferred();
   //one–create event on selector. Trigger pageload on event (end of curtain animation)
