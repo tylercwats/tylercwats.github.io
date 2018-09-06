@@ -36,10 +36,6 @@ function returnNextPg(page_data){
 $('.next-project').click( page_data, function(){
   //collects next page
   returnNextPg(page_data);
-  // returnNextURL(page_data);
-
-  //write transition between the projects
-
   //loads the next page
   loadProject(page_data.page);
 });

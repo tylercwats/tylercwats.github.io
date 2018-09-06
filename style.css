@@ -352,7 +352,8 @@ svg{
 .black-curtain-in{
   transform:
   translateX(0px)
-  translateY(130vh)
+  /* translateY(130vh) */
+  translateY(0)
   translateZ(0px)
   scaleX(1)
   scaleY(1)
@@ -364,74 +365,7 @@ svg{
   skewY(-3deg);
   background-color: rgb(17, 17, 17);
   display:block;
-}
-.in{
-    transform: translateX(0px) translateY(10vh) translateZ(0px) scaleX(1) scaleY(1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(-3deg);
-    /* animation: slidein 200ms ease-in-out; */
-}
-.out{
-  transform: translateX(0px) translateY(-130vh) translateZ(0px) scaleX(1) scaleY(1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(-3deg);
-  /* animation: slideout 200ms ease-in-out; */
-}
-
-/* .in, .out{
-  transition: transform 600ms ease-in-out;
-} */
-
-.in_up{
-  animation: in_up 300ms ease-in 0s ;
-  animation-fill-mode: forwards;
-}
-.out_up{
-  animation: out_up 300ms ease-out 0s ;
-  animation-fill-mode: forwards;
-}
-.in_down{
-  animation: in_down 300ms ease-in 0s ;
-  animation-fill-mode: forwards;
-}
-.out_down{
-  animation: out_down 300ms ease-out 0s ;
-  animation-fill-mode: forwards;
-}
-
-@keyframes in_up{
-  0%{
-    transform: translateY(130vh);
-  }
-  100%{
-    transform: translateY(10vh);
-  }
-}
-
-@keyframes out_up{
-  0%{
-    transform: translateY(10vh);
-  }
-  100%{
-    transform: translateY(-130vh);
-  }
-}
-
-@keyframes in_down{
-  0%{
-    transform: translateY(-130vh);
-  }
-  100%{
-    transform: translateY(10vh);
-  }
-}
-
-@keyframes out_down{
-  0%{
-    transform: translateY(10vh);
-  }
-  100%{
-    transform: translateY(130vh);
-  }
-}
-
-.black-curtain-in, .black-curtain-out{
+  top:120vh;
   position: fixed;
   left: 0;
   right: 0;
@@ -440,6 +374,7 @@ svg{
   height: 120vh;
   bottom: 0;
 }
+
 .wrapper, .loader{
     top: 0;
     /* top: 8vh; */
@@ -611,7 +546,7 @@ svg{
     background: -o-linear-gradient(-40deg,#8b1d1f 30%,#600f09 100%);
     background: -ms-linear-gradient(-40deg,#8b1d1f 30%,#600f09 100%);
     background: linear-gradient(140deg,#8b1d1f 30%,#600f09 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8b1d1f', endColorstr='#600f09', GradientType=1 )
+    /* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8b1d1f', endColorstr='#600f09', GradientType=1 ) */
 }
 
 #mvBike.img-container {

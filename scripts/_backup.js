@@ -5,7 +5,6 @@
 var page_data = {};
 var url;
 var $curtain = $('.black-curtain-in');
-var $page = $('#loaded-page');
 
 var projects =
 {
@@ -99,7 +98,7 @@ function findURL(name, page_data){
   var url = '/projects/' + projects[keys[index]].page;
   updatePage_index(index, page_data);
   //remove project and load current one
-  // emptyPage();
+  emptyPage();
   loadProject(url);
 
   return;
@@ -112,8 +111,7 @@ function renderPopState(){
     // if (history.state === '' && e.state === '') {
     if (e.state == '' || e.state.id === '') {
         //empties to homepage
-        // emptyPage();
-        curtainClose();
+        emptyPage();
         return;
     }
     else if (history.state === e.state){
@@ -129,137 +127,136 @@ function renderPopState(){
 }
 
 function closeProject(e){
-  curtainClose();
+  var promise = new $.Deferred();
+
+  $.when( animCurtain('down') ).done(
+    function(){
+      setTimeout(function(){
+        emptyPage();
+      },150);
+    }
+  ).then(
+    function(){ animCurtain('down') }
+  ).done(function(){
+      return promise.resolve();
+    });
 }
 
-var showPage = function showPage($page, e){
-  $page.show(100, function(e){
-    var that = $(this).find('.description');
-    var high = that.outerHeight();
-    // dynamically setting the spaceing size between the image and length of text
-    $(".description-space").css({height : high});
+//checks to see if class is animating
+//returns promise when complete
+function animCheck(classs){
+  var promise = new $.Deferred();
+  $(classs).on('oanimationend msAnimationEnd animationend', function(e){
+      console.log('animation over emptying');
+      return promise.resolve();
   });
 }
 
-//____________________________________________________________//
-// returns the value needed to move curtain and what direction
-// curtain is 1.2 height + skewed 3 degrees (adds more height)
+function emptyPage(){
+  var promise = new $.Deferred();
+  console.log('emptying');
+  $('#loaded-page').hide().empty();
+  return promise.resolve();
+}
+
+var loadPage = function ($curtain, $page, page_url){
+  $.ajax(page_url, {
+    success: function(data){
+      //analytics
+      ga('send', {
+        hitType: 'pageview',
+        page: page_url
+      });
+      //append returned data into page
+      $.when( emptyPage() ).done(function(){
+        console.log('page appened');
+        $page.append(data);
+      })
+      //further update the page accordingly
+      //returns next project info (name)
+      //update next project eyebrow info
+      getNextProject_data(page_data, keys);
+      //gets scripts for the page we loaded
+      $.getScript("/scripts/project.js");
+      //fades in doc and sets the height of space
+      $page.show(400, function(e){
+        var that = $(this).find('.description');
+        var high = that.outerHeight();
+        //dynamically setting the spaceing size between the image and length of text
+        $(".description-space").css({height : high});
+      });
+    },
+    error: function(){
+      console.log('error retrieving project')
+    },
+    complete: function(){
+
+      setTimeout(function(){
+        animCurtain('up');
+      },1000);
+    }
+  })
+}
+
+//adds class to curtain to animate.
+//returns on completion of animations
+function setCurtain(classs){
+  var $curtain = $('.black-curtain-in');
+  var promise = new $.Deferred();
+  $curtain.addClass(classs);
+  $.when( animCheck(classs) ).done( function(){
+    console.log('animation complete', classs);
+    return promise.resolve();
+  });
+}
+
+var resetCurtain = function(){
+  // var $curtain = $('.black-curtain-in');
+  var og = ( 1.3 * $(window).height() );
+  $curtain.css({top:og});
+}
+
+function animCurtain( direction ){
+  var $curtain = $('.black-curtain-in');
+  var promise = new $.Deferred();
+  direction = returnDirection_val(direction);
+  console.log('direction',direction);
+  $curtain.animate({top: ('+=' + direction)}, 300, function(){
+    return promise.resolve();
+  });
+}
+
 function returnDirection_val( direction ){
-  //this is the most recent function called
   var vh = ( 1.3 * $(window).height() );
-  //console.log('direction: ', direction);
+  console.log(vh);
   if(direction == 'up'){
+    console.log('up');
     direction = ('-' + vh);
   }
   if(direction == 'down'){
+    console.log('down');
     direction = vh;
   }
   return direction;
 }
 
-/*---------------------------------------------------------
-RETRY
----------------------------------------------------------*/
-//reset curtain to bottom position of window
-function resetCurtain($curtain){
-  return new Promise( (resolve, reject) => {
-  // 120vh is the original top value set in the css
-  // var og = ( 1.2 * $(window).height() );
-    var og = '120vh';
-    $curtain.css({ top : og });
-    //console.log('reset curtain top: ', $curtain.css('top') );
-    resolve();
-  });
+function resetClass($curtain){
+  var promise = new $.Deferred();
+  $curtain.removeClass('in_up out_up in_down out_down');
+  return promise.resolve();
 }
 
-function animCurtain( direction, $curtain ){
-  direction = returnDirection_val(direction);
-  return $curtain.animate({ top: ('+=' + direction) }, 300, function(){
-    //console.log('animation finished');
-  }).promise();
-}
-
-var loadPage = function ($curtain, $page, page_url, pageData){
-  return new Promise( (resolve, reject) => {
-    $.ajax(page_url, {
-      success: function(data){
-        //analytics
-        ga('send', {
-          hitType: 'pageview',
-          page: page_url
-        });
-        pageData = data;
-        // getNextProject_data(page_data, keys);
-        // $.getScript("/scripts/project.js");
-        return resolve(pageData);
-      }
-    });
-  });
-
-}
-
-var curtainUp = function (){
-
-  return new Promise( (resolve, reject) => {
-    resetCurtain($curtain)
-    .then( () => {
-      resolve(animCurtain('up', $curtain));
-    });
-  });
-
-}
-
-var curtainClose = function (){
-
-  animCurtain('down',$curtain)
-  .then( () => {
-    emptyPage()
-  })
-  .then(() => {
-    animCurtain('down',$curtain)
-  });
-
-}
-
-var emptyPage = function(){
-
-  return new Promise( (resolve, reject) => {
-    $('#loaded-page').hide().empty();
-      resolve();
-  });
-}
-
-var appendData = function($page, pageData){
-  return new Promise( (resolve,reject) => {
-    // console.log('appending data: ', pageData);
-    $page.append(pageData[0]).show(0, function(e){
-      getNextProject_data(page_data, keys);
-      var that = $(this).find('.description');
-      var high = that.outerHeight();
-      //dynamically setting the spaceing size between the image and length of text
-      $(".description-space").css({height : high});
-      $.getScript("/scripts/project.js", function(){
-        resolve();
-      });
-    });
-  })
-}
-
-//loads project with transitions & Chains together necessary functions
-//
+//loads project with transitions.
+//Chains together necessary functions
 function loadProject(page_url){
-  //need to reinitialize this everytime
-  var pageData = null;
-  Promise.all([ loadPage($curtain, $page, page_url), curtainUp() ])
-  .then( (pageData) => { emptyPage()
-    .then( () => {
-      appendData($page, pageData);
-    })
-    .then(()=>{
-      animCurtain('up', $curtain);
-    });
-  });
+  //resetclass. move curtain in. emptyproject. load new project. move curtain after load.
+  var $page = $('#loaded-page');
+  var $curtain = $('.black-curtain-in');
+  //after the class has been reset and the animation is complete. load the page.
+  // $.when( resetClass($curtain).done( function(){ setCurtain('in_up') } ) ).then( function(){ loadPage($curtain, $page, page_url) } );
+  $.when( animCurtain('up') ).then( function(){ loadPage($curtain, $page, page_url) } ).then(resetCurtain);
 }
+
 function fadeInPreview(e){
   var name = $(e.target).text();
   returnImageID(page_data, name);
@@ -274,7 +271,7 @@ function fadeInPreview(e){
 
 function fadeOutPreview(e){
   var name = $(e.target).text();
-  //console.log("out: ",name);
+  // //console.log("out: ",name);
   returnImageID(page_data, name);
   //target unique image_id
   var id = "#" + page_data.image_id;
@@ -285,6 +282,7 @@ function fadeOutPreview(e){
 
 //on document ready
 $( function() {
+  // $.getScript("/scripts/loader.js");
   // initialize history event
   history.replaceState('','','');
 

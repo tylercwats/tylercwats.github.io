@@ -5,7 +5,6 @@
 var page_data = {};
 var url;
 var $curtain = $('.black-curtain-in');
-var $page = $('#loaded-page');
 
 var projects =
 {
@@ -99,7 +98,7 @@ function findURL(name, page_data){
   var url = '/projects/' + projects[keys[index]].page;
   updatePage_index(index, page_data);
   //remove project and load current one
-  // emptyPage();
+  emptyPage();
   loadProject(url);
 
   return;
@@ -112,8 +111,7 @@ function renderPopState(){
     // if (history.state === '' && e.state === '') {
     if (e.state == '' || e.state.id === '') {
         //empties to homepage
-        // emptyPage();
-        curtainClose();
+        emptyPage();
         return;
     }
     else if (history.state === e.state){
@@ -129,8 +127,65 @@ function renderPopState(){
 }
 
 function closeProject(e){
-  curtainClose();
+  //not returning promises properly to chain events
+  animCurtain('down').then(
+    function(){
+      emptyPage()
+    }).then(function(){ animCurtain('down') });
 }
+
+// function emptyPage(){
+//   var promise = new $.Deferred();
+//   $('#loaded-page').hide().empty();
+//   return promise.resolve();
+// }
+
+// function emptyPage(){
+//
+//   return new Promise(function(resolve, reject) {
+//     $('#loaded-page').hide().empty();
+//       resolve();
+//       console.log('page emptied');
+//   });
+// }
+
+// var loadPage = function ($curtain, $page, page_url){
+//   var promise = new $.Deferred();
+//   $.ajax(page_url, {
+//     //on success of page url append the data
+//     success: function(data){
+//       //analytics
+//       ga('send', {
+//         hitType: 'pageview',
+//         page: page_url
+//       });
+//       //append returned data into page
+//       $.when( emptyPage() ).done(function(){
+//         $page.append(data);
+//         getNextProject_data(page_data, keys);
+//         $.getScript("/scripts/project.js");
+//         console.log('appened');
+//       });
+//       //further update the page accordingly
+//       //returns next project info (name)
+//       //update next project eyebrow info
+//       // getNextProject_data(page_data, keys);
+//       //gets scripts for the page we loaded
+//       // $.getScript("/scripts/project.js");
+//     },
+//     error: function(){
+//       console.log('error retrieving project')
+//     },
+//     complete: function(e){
+//       setTimeout(function(e){
+//         showPage($page, e);
+//         return new Promise(function(resolve,reject){
+//           resolve();
+//         });
+//       },500);
+//     }
+//   });
+// }
 
 var showPage = function showPage($page, e){
   $page.show(100, function(e){
@@ -141,13 +196,33 @@ var showPage = function showPage($page, e){
   });
 }
 
+// var resetCurtain = function resetCurtain(){
+//   var dfd = new $.Deferred();
+//   var $curtain = $('.black-curtain-in');
+//   var og = ( 1.3 * $(window).height() );
+//   console.log('reset top to ', og);
+//   $curtain.css({ top : og });
+//   dfd.resolve();
+//   return dfd.promise();
+// }
+
+// function animCurtain( direction ){
+//   var $curtain = $('.black-curtain-in');
+//   direction = returnDirection_val(direction);
+//   return new Promise(function(resolve, reject) {
+//     $curtain.animate({ top: ('+=' + direction) }, 300,
+//     function(){
+//       resolve();
+//     });
+//   });
+// }
+
 //____________________________________________________________//
 // returns the value needed to move curtain and what direction
 // curtain is 1.2 height + skewed 3 degrees (adds more height)
 function returnDirection_val( direction ){
-  //this is the most recent function called
   var vh = ( 1.3 * $(window).height() );
-  //console.log('direction: ', direction);
+  console.log('direction: ', direction);
   if(direction == 'up'){
     direction = ('-' + vh);
   }
@@ -161,36 +236,91 @@ function returnDirection_val( direction ){
 RETRY
 ---------------------------------------------------------*/
 //reset curtain to bottom position of window
-function resetCurtain($curtain){
-  return new Promise( (resolve, reject) => {
+// function resetCurtain($curtain){
+//   return new Promise((resolve, reject) => {
+//   // 120vh is the original top value set in the css
+//   // var og = ( 1.2 * $(window).height() );
+//     var og = '120vh';
+//     $curtain.css({ top : og });
+//     console.log('reset curtain top: ', $curtain.css('top') );
+//     resolve();
+//   })
+// }
+
+
+// function animCurtain( direction, $curtain ){
+//   direction = returnDirection_val(direction);
+//
+//   return new Promise( function(resolve, reject) {
+//   $curtain.animate({ top: ('+=' + direction) }, 300, 'swing',
+//     function(){
+//       console.log('curtain animated: ', direction);
+//       console.log('top value: ', $(this).css('top') );
+//       resolve();
+//     });
+//
+//   });
+// }
+
+function animCurtain( direction, $curtain ){
+  direction = returnDirection_val(direction);
+
+  $curtain.animate({ top: ('+=' + direction) }, 300, 'swing', function (){
+    console.log('top value: ', $(this).css('top') );
+    console.log('curtain animated: ', direction);
+    return Promise.resolve();
+  });
+}
+
+function resetCurtainUp($curtain,  direction){
   // 120vh is the original top value set in the css
   // var og = ( 1.2 * $(window).height() );
     var og = '120vh';
     $curtain.css({ top : og });
-    //console.log('reset curtain top: ', $curtain.css('top') );
-    resolve();
-  });
+    console.log('reset curtain top: ', $curtain.css('top') );
+    // animCurtain(direction, $curtain);
+    Promise.resolve(animCurtain(direction,$curtain));
 }
 
-function animCurtain( direction, $curtain ){
-  direction = returnDirection_val(direction);
-  return $curtain.animate({ top: ('+=' + direction) }, 300, function(){
-    //console.log('animation finished');
-  }).promise();
-}
+// var loadPage = function ($curtain, $page, page_url, pageData){
+//
+//   return Promise.resolve($.ajax(page_url, {
+//     success: function(data){
+//       //analytics
+//       // ga('send', {
+//       //   hitType: 'pageview',
+//       //   page: page_url
+//       // });
+//       // console.log('ajax success');
+//       // return data;
+//     },
+//     error: function(){
+//       console.log('error retrieving project')
+//     }
+//   //   , complete: function(data){
+//   //     return data, new Promise( (resolve, reject) => {
+//   //       console.log('ajax complete');
+//   //       resolve();
+//   //     });
+//   //   }
+//   // });
+//   });
+// }
 
 var loadPage = function ($curtain, $page, page_url, pageData){
-  return new Promise( (resolve, reject) => {
+
+  // $.ajax({ url: page_url })
+  // .done((data , pageData) => {
+  //   pageData = data;
+  //   // console.log(pageData);
+  //   console.log(pageData);
+  //   return Promise.resolve(pageData);
+  // });
+  return new Promise(function(resolve, reject) {
     $.ajax(page_url, {
       success: function(data){
-        //analytics
-        ga('send', {
-          hitType: 'pageview',
-          page: page_url
-        });
         pageData = data;
-        // getNextProject_data(page_data, keys);
-        // $.getScript("/scripts/project.js");
+        // console.log('ajax success data: ', pageData);
         return resolve(pageData);
       }
     });
@@ -198,68 +328,101 @@ var loadPage = function ($curtain, $page, page_url, pageData){
 
 }
 
-var curtainUp = function (){
+// function curtainUp(){
+//
+//   return new Promise( function(resolve, reject) {
+//
+//     resetCurtain($curtain)
+//     .then( () => {
+//       animCurtain('up', $curtain)
+//     }).then( () =>{
+//       resolve('all curtain promise');
+//       return resolve();
+//     });
+//
+//   });
+//
+// }
 
-  return new Promise( (resolve, reject) => {
-    resetCurtain($curtain)
-    .then( () => {
-      resolve(animCurtain('up', $curtain));
-    });
-  });
-
-}
-
-var curtainClose = function (){
-
-  animCurtain('down',$curtain)
-  .then( () => {
-    emptyPage()
-  })
-  .then(() => {
-    animCurtain('down',$curtain)
-  });
-
-}
+// function curtainUp(){
+//
+//     resetCurtain($curtain)
+//     .then( () => {
+//       return animCurtain('up', $curtain)
+//     });
+// }
 
 var emptyPage = function(){
 
-  return new Promise( (resolve, reject) => {
+  return new Promise(function(resolve, reject) {
     $('#loaded-page').hide().empty();
+      console.log('emptied');
       resolve();
   });
 }
 
 var appendData = function($page, pageData){
-  return new Promise( (resolve,reject) => {
+  return new Promise(function(resolve,reject){
     // console.log('appending data: ', pageData);
-    $page.append(pageData[0]).show(0, function(e){
-      getNextProject_data(page_data, keys);
-      var that = $(this).find('.description');
-      var high = that.outerHeight();
-      //dynamically setting the spaceing size between the image and length of text
-      $(".description-space").css({height : high});
-      $.getScript("/scripts/project.js", function(){
-        resolve();
-      });
-    });
+    $page.append(pageData);
+    resolve();
   })
 }
 
 //loads project with transitions & Chains together necessary functions
 //
 function loadProject(page_url){
+  var $page = $('#loaded-page');
+  var $curtain = $('.black-curtain-in');
   //need to reinitialize this everytime
   var pageData = null;
-  Promise.all([ loadPage($curtain, $page, page_url), curtainUp() ])
+  Promise.all([ resetCurtainUp($curtain, 'up') ])
   .then( (pageData) => { emptyPage()
-    .then( () => {
-      appendData($page, pageData);
-    })
-    .then(()=>{
-      animCurtain('up', $curtain);
-    });
+    .then( () => { appendData($page, pageData) } )
+    .then( () => { console.log('done appending data') } );
   });
+  // $.when( loadPage($curtain, $page, page_url), curtainUp() )
+  // .then( (pageData) => { emptyPage()
+  //   .then( () => { appendData($page, pageData) } )
+  //   .then( () => { console.log('done appending data') } );
+  // });
+  // .then(() => { appendData($page, pageData) });
+
 }
+  // $.when( loadPage($curtain, $page, page_url) , curtainUp() ).done( ()=>{console.log('when done')} );
+  //(load content , reset curtain and move curtain in place)
+  //done empty content. append new data.
+  //move curtain out
+
+  // resetCurtain($curtain)
+  // .then(()=>{
+  //   return animCurtain('up', $curtain)
+  // }).then(()=>{
+  //
+  // });
+
+  //after the class has been reset and the animation is complete. load the page.
+  // $.when(
+  //   loadPage($curtain, $page, page_url),
+  //   $.when(
+  //     resetCurtain().then( function(){
+  //       animCurtain('up')
+  //     })
+  //   )
+  // ).done(
+  //   function(){
+  //     animCurtain('up')
+  //   });
+    //curtain up & load project. empty project. show project. curtain down.
+  // let promiseFirst = [resetCurtain, animCurtain, loadPage];
+  //
+  // Promise.all(promiseFirst).then((allResolutions)=>{
+  //   console.log('resolutions: ',allResolutions);
+  // })
+  // .catch((err)=>{
+  //   console.log('error: ',err);
+  // });
+  // }
 function fadeInPreview(e){
   var name = $(e.target).text();
   returnImageID(page_data, name);
@@ -274,7 +437,7 @@ function fadeInPreview(e){
 
 function fadeOutPreview(e){
   var name = $(e.target).text();
-  //console.log("out: ",name);
+  // //console.log("out: ",name);
   returnImageID(page_data, name);
   //target unique image_id
   var id = "#" + page_data.image_id;
@@ -285,6 +448,7 @@ function fadeOutPreview(e){
 
 //on document ready
 $( function() {
+  // $.getScript("/scripts/loader.js");
   // initialize history event
   history.replaceState('','','');
 
