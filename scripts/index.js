@@ -165,7 +165,7 @@ function resetCurtain($curtain){
 
 function animCurtain( direction, $curtain ){
   direction = returnDirection_val(direction);
-  return $curtain.animate({ top: ('+=' + direction) }, 300, function(){
+  return $curtain.animate({ top: ('+=' + direction) }, 350, function(){
     //console.log('animation finished');
   }).promise();
 }
@@ -207,7 +207,9 @@ var curtainClose = function (){
     emptyPage()
   })
   .then(() => {
-    animCurtain('down',$curtain)
+    setTimeout(function(){
+      animCurtain('down',$curtain);
+    }, 200);
   });
 
 }
@@ -246,8 +248,8 @@ function loadProject(page_url){
     .then( () => {
       appendData($page, pageData);
     })
-    .then(()=>{
-      animCurtain('up', $curtain);
+    .then( () => {
+      setTimeout(function(){ animCurtain('up', $curtain); },200);
     });
   });
 }
