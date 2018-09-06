@@ -132,15 +132,6 @@ function closeProject(e){
   curtainClose();
 }
 
-var showPage = function showPage($page, e){
-  $page.show(100, function(e){
-    var that = $(this).find('.description');
-    var high = that.outerHeight();
-    // dynamically setting the spaceing size between the image and length of text
-    $(".description-space").css({height : high});
-  });
-}
-
 //____________________________________________________________//
 // returns the value needed to move curtain and what direction
 // curtain is 1.2 height + skewed 3 degrees (adds more height)
