@@ -260,6 +260,7 @@ function loadProject(page_url){
     });
   });
 }
+
 function fadeInPreview(e){
   var name = $(e.target).text();
   returnImageID(page_data, name);
