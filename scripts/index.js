@@ -137,7 +137,7 @@ function closeProject(e){
 // curtain is 1.2 height + skewed 3 degrees (adds more height)
 function returnDirection_val( direction ){
   //this is the most recent function called
-  var vh = ( 1.3 * $(window).height() );
+  var vh = ( 1.65 * $(window).height() );
   //console.log('direction: ', direction);
   if(direction == 'up'){
     direction = ('-' + vh);
