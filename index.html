@@ -204,7 +204,11 @@
   <div class="preview">
     <div class="sizing">
       <div class="preview-image">
-        <video id="_reel" playsinline loop autoplay muted src="/images/preview.mp4">
+        <!-- <video id="_reel" src="/images/preview.mp4" type="video/mp4" playsinline loop autoplay muted >
+        </video> -->
+        <video id="_reel" class="lazyload" data-poster="" preload="auto" autoplay muted loop playsinline>
+          <source src="/images/preview.webm" type="video/webm">
+          <source src="/images/preview.mp4" type="video/mp4">
         </video>
       </div>
     </div>
