@@ -503,7 +503,9 @@ svg{
 #panopticon_1.img-frame {
     margin: 0 0 2rem
 }
-
+#panopticon_1 video{
+  max-height:95vh;
+}
 #asPoster3,#asPoster4,#mvStationery,#as_num,#as_logo,.img-frame.mvBanner {
     margin: 0
 }
